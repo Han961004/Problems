@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// 에라토스테네스의 체를 사용하여 소수를 구하는 함수
+vector<bool> getPrimes(int n) {
+    vector<bool> isPrime(n + 1, true);
+    isPrime[0] = isPrime[1] = false;
+
+    for (int i = 2; i * i <= n; ++i) {
+        if (isPrime[i]) {
+            for (int j = i * i; j <= n; j += i) {
+                isPrime[j] = false;
+            }
+        }
+    }
+
+    return isPrime;
+}
+
+// 골드바흐 파티션을 찾는 함수
+void GoldbachPartition(int n, const vector<bool>& isPrime) {
+    int half = n / 2;
+
+    for (int i = half; i >= 2; --i) {
+        if (isPrime[i] && isPrime[n - i]) {
+            cout << i << " " << n - i << '\n';
+            return;
+        }
+    }
+}
+
+int main() {
+    
+    int T;
+    cin >> T;
+
+    // 최대 입력 값인 10000까지의 소수를 구함
+    vector<bool> isPrime = getPrimes(10000);
+
+    while (T--) {
+        int n;
+        cin >> n;
+        GoldbachPartition(n, isPrime);
+    }
+
+    return 0;
+}
